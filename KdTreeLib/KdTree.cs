@@ -24,7 +24,7 @@ namespace KdTree
 					public TMetric Metric;
 
 					private static readonly int Dimension = default(TArrayAccessor).Length;
-					private static bool Equals(TArray a, TArray b) => FixedArray.Equals<T, TArray, TArrayAccessor>(a, b);
+					private static bool Equals(TArray a, TArray b) => FixedArray<T, TArray, TArrayAccessor>.Equals(a, b);
 					private static int Compare(T a, T b) => a.CompareTo(b);
 
 					public Tree()

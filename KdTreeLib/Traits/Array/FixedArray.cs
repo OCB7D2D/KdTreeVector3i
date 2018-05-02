@@ -56,19 +56,35 @@ namespace KdTree
 		public ref T At(ref Array array, int i) => ref AsSpan(ref array)[i];
 	}
 
-	public static class FixedArray
+	public static class FixedArray<T, TArray, TArrayAccessor>
+		where T : IEquatable<T>
+		where TArray : struct, IFixedArray<T>
+		where TArrayAccessor : struct, IFixedArrayAccessor<T, TArray>
 	{
-		public static bool Equals<T, TArray, TArrayAccessor>(TArray x, TArray y)
-			where T : IEquatable<T>
-			where TArray : struct, IFixedArray<T>
-			where TArrayAccessor : struct, IFixedArrayAccessor<T, TArray>
-		{
-			var accessor = default(TArrayAccessor);
-			var dim = accessor.Length;
+		private static readonly TArrayAccessor Accessor = default;
 
-			for (int i = 0; i < dim; i++)
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool Equals(TArray x, TArray y)
+		{
+			if (Accessor.Length == 1) return Equals1(x, y);
+			if (Accessor.Length == 2) return Equals2(x, y);
+			return EqualsMore(ref x, ref y);
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private static bool Equals1(TArray x, TArray y)
+			=> Accessor.At(ref x, 0).Equals(Accessor.At(ref y, 0));
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private static bool Equals2(TArray x, TArray y)
+			=> Accessor.At(ref x, 0).Equals(Accessor.At(ref y, 0))
+			&& Accessor.At(ref x, 1).Equals(Accessor.At(ref y, 1));
+
+		private static bool EqualsMore(ref TArray x, ref TArray y)
+		{
+			for (int i = 0; i < Accessor.Length; i++)
 			{
-				if (!accessor.At(ref x, i).Equals(accessor.At(ref y, i))) return false;
+				if (!Accessor.At(ref x, i).Equals(Accessor.At(ref y, i))) return false;
 			}
 
 			return true;
