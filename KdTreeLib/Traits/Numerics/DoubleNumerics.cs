@@ -1,21 +1,14 @@
-﻿namespace KdTree.Math
+﻿namespace KdTree
 {
-	public struct DoubleMath : INumerics<double>
+	public struct DoubleNumerics : INumerics<double>
 	{
 		public double MinValue => double.MinValue;
-
 		public double MaxValue => double.MaxValue;
-
 		public double Zero => 0;
-
 		public double NegativeInfinity => double.NegativeInfinity;
-
 		public double PositiveInfinity => double.PositiveInfinity;
-
 		public double Add(double a, double b) => a + b;
-
 		public double Subtract(double a, double b) => a - b;
-
 		public double Multiply(double a, double b) => a * b;
 	}
 }

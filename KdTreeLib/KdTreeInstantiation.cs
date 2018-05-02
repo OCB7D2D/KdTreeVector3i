@@ -23,6 +23,9 @@ namespace KdTree
 		public class _3 : Dimention<Fixed3<T>.Array, Fixed3<T>> { }
 	}
 
-	public class FloatKdTreeFactory : KdTree<float, Math.FloatMath> { }
-	public class DoubleKdTreeFactory : KdTree<double, Math.DoubleMath> { }
+	public class IntKdTree : KdTree<int, IntNumerics> { }
+	public class ShortKdTree : KdTree<short, ShortNumerics> { }
+	public class LongKdTree : KdTree<long, LongNumerics> { }
+	public class FloatKdTree : KdTree<float, FloatNumerics> { }
+	public class DoubleKdTree : KdTree<double, DoubleNumerics> { }
 }
