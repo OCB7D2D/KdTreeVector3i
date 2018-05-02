@@ -2,8 +2,8 @@
 
 namespace KdTree
 {
-	public class PriorityQueue<TItem, TPriority, TNumerics>
-		where TNumerics : struct, INumerics<TPriority>
+	public class PriorityQueue<TItem, TPriority>
+		where TPriority : IComparable<TPriority>
 	{
 		struct ItemPriority
 		{
@@ -27,7 +27,7 @@ namespace KdTree
 
 		private bool IsHigherPriority(int left, int right)
 		{
-			return default(TNumerics).Compare(_items[left].Priority, _items[right].Priority) > 0;
+			return _items[left].Priority.CompareTo(_items[right].Priority) > 0;
 		}
 
 		private void Percolate(int index)

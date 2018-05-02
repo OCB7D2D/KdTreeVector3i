@@ -3,19 +3,19 @@ using System.Text;
 
 namespace KdTree
 {
-	public partial class KdTree<TKey, TValue, TKeyBundle, TDimension, TNumerics, TMetrics>
+	public partial class KdTree<TKey, TValue, TKeyArray, TKeyArrayAccessor, TNumerics, TMetrics>
 	{
 		[Serializable]
 		public class Node
 		{
-			public Node(TKeyBundle point, TValue value)
+			public Node(TKeyArray point, TValue value)
 			{
 				Point = point;
 				Value = value;
 			}
 
-			public TKeyBundle Point;
-			public TValue Value = default(TValue);
+			public TKeyArray Point;
+			public TValue Value = default;
 
 			internal Node LeftChild = null;
 			internal Node RightChild = null;
@@ -43,9 +43,12 @@ namespace KdTree
 			{
 				var sb = new StringBuilder();
 
-				for (var dimension = 0; dimension < Point.Length; dimension++)
+				var accessor = default(TKeyArrayAccessor);
+				var dim = accessor.Length;
+				var p = Point;
+				for (var i = 0; i < dim; i++)
 				{
-					sb.Append(Point[dimension].ToString() + "\t");
+					sb.Append(accessor.At(ref p, i).ToString() + "\t");
 				}
 
 				if (Value == null)

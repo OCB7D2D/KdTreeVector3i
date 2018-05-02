@@ -1,10 +1,9 @@
-﻿using KdTree.Math;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Tree = KdTree.KdTree<float, string, KdTree.Math.FloatPair, KdTree.Integer._2, KdTree.Math.FloatMath, KdTree.Math.FloatEuclideanMetic>;
-using Node = KdTree.KdTree<float, string, KdTree.Math.FloatPair, KdTree.Integer._2, KdTree.Math.FloatMath, KdTree.Math.FloatEuclideanMetic>.Node;
+using Tree = KdTree.KdTree<float, string, KdTree.Fixed2<float>.Array, KdTree.Fixed2<float>, KdTree.Math.FloatMath, KdTree.Math.EuclideanMetic<float, KdTree.Fixed2<float>.Array, KdTree.Fixed2<float>, KdTree.Math.FloatMath>>;
+using Node = KdTree.KdTree<float, string, KdTree.Fixed2<float>.Array, KdTree.Fixed2<float>, KdTree.Math.FloatMath, KdTree.Math.EuclideanMetic<float, KdTree.Fixed2<float>.Array, KdTree.Fixed2<float>, KdTree.Math.FloatMath>>.Node;
 
 struct City
 {
@@ -29,12 +28,12 @@ namespace KdTree.Tests
 			testNodes = new List<Node>();
 			testNodes.AddRange(new Node[]
 			{
-				new Node(new FloatPair(5, 5), "Root"),
+				new Node((5, 5), "Root"),
 
-				new Node(new FloatPair(2.5f, 2.5f), "Root-Left"),
-				new Node(new FloatPair(7.5f, 7.5f), "Root-Right"),
-				new Node(new FloatPair(1, 10), "Root-Left-Left"),
-				new Node(new FloatPair(10, 10), "Root-Right-Right")
+				new Node((2.5f, 2.5f), "Root-Left"),
+				new Node((7.5f, 7.5f), "Root-Right"),
+				new Node((1, 10), "Root-Left-Left"),
+				new Node((10, 10), "Root-Right-Right")
 			});
 		}
 
@@ -140,7 +139,7 @@ namespace KdTree.Tests
 					Assert.Fail("Could not find test node");
 			}
 
-			if (!tree.TryFindValueAt(new FloatPair(3.14f, 5), out actualValue))
+			if (!tree.TryFindValueAt((3.14f, 5), out actualValue))
 				Assert.IsNull(actualValue);
 			else
 				Assert.Fail("Reportedly found node it shouldn't have");
@@ -161,7 +160,7 @@ namespace KdTree.Tests
 				Assert.AreEqual(node.Value, actualValue);
 			}
 
-			actualValue = tree.FindValueAt(new FloatPair(3.15f, 5));
+			actualValue = tree.FindValueAt((3.15f, 5));
 
 			Assert.IsNull(actualValue);
 		}
@@ -172,7 +171,7 @@ namespace KdTree.Tests
 		{
 			AddTestNodes();
 
-			FloatPair actualPoint;
+			Fixed2<float>.Array actualPoint;
 
 			foreach (var node in testNodes)
 			{
@@ -290,7 +289,7 @@ namespace KdTree.Tests
 
 			foreach (var city in cities)
 			{
-				tree.Add(new FloatPair(city.Long, -city.Lat), city.Address);
+				tree.Add((city.Long, -city.Lat), city.Address);
 			}
 
 			/*
@@ -308,7 +307,7 @@ namespace KdTree.Tests
 			for (var findLimit = 0; findLimit <= cities.Length; findLimit++)
 			{
 				var actualNeighbours = tree.GetNearestNeighbours(
-					new FloatPair(toowoomba.Long, -toowoomba.Lat),
+					(toowoomba.Long, -toowoomba.Lat),
 					findLimit);
 
 				var expectedNeighbours = cities
@@ -394,17 +393,17 @@ namespace KdTree.Tests
 
 			foreach (var city in cities)
 			{
-				tree.Add(new FloatPair(city.Long, -city.Lat), city.Address);
+				tree.Add((city.Long, -city.Lat), city.Address);
 			}
 			var expectedNeighbours = cities
 				.OrderBy(p => p.DistanceFromToowoomba).ToList();
 
 			for (var i = 1; i < 100; i *= 2)
 			{
-				var actualNeighbours = tree.RadialSearch(new FloatPair(toowoomba.Long, -toowoomba.Lat), i);
+				var actualNeighbours = tree.RadialSearch((toowoomba.Long, -toowoomba.Lat), i);
 
 				var list = Tree.CreateUnlimitedList();
-				tree.RadialSearch(new FloatPair(toowoomba.Long, -toowoomba.Lat), i, list);
+				tree.RadialSearch((toowoomba.Long, -toowoomba.Lat), i, list);
 				var sorted = list.GetSortedArray();
 
 				for (var index = 0; index < actualNeighbours.Length; index++)
@@ -423,7 +422,7 @@ namespace KdTree.Tests
 
 			foreach (var node in tree)
 			{
-				var testNode = testNodes.FirstOrDefault(n => n.Point == node.Point && n.Value == node.Value);
+				var testNode = testNodes.FirstOrDefault(n => n.Point.Item1 == node.Point.Item1 && n.Point.Item2 == node.Point.Item2 && n.Value == node.Value);
 
 				Assert.IsNotNull(testNode);
 

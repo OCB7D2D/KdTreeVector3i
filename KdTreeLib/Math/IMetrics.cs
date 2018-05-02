@@ -2,9 +2,9 @@
 
 namespace KdTree
 {
-	public interface IMetrics<T, TBundle> : IEqualityComparer<TBundle>
-		where TBundle : IBundle<T>
+	public interface IMetrics<T, TArray>
+		where TArray : IFixedArray<T>
 	{
-		T DistanceSquaredBetweenPoints(TBundle a, TBundle b);
+		T DistanceSquaredBetweenPoints(TArray a, TArray b);
 	}
 }

@@ -14,13 +14,13 @@ namespace KdTree.Tests
 	[TestClass]
 	public class PriorityQueueTests
 	{
-		private PriorityQueue<string, float, FloatMath> queue;
+		private PriorityQueue<string, float> queue;
 		private List<Person> people;
 
 		[TestInitialize]
 		public void Setup()
 		{
-			queue = new PriorityQueue<string, float, FloatMath>(2);
+			queue = new PriorityQueue<string, float>(2);
 
 			people = new List<Person>();
 			people.AddRange(new Person[]

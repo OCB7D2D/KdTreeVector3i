@@ -2,7 +2,7 @@
 
 namespace KdTree.Math
 {
-	public struct GeoLocation : IBundle<float>
+	public struct GeoLocation : IFixedArray<float>
 	{
 		public float Latitude;
 		public float Longitude;
