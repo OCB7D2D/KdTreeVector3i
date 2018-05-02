@@ -28,6 +28,12 @@ namespace KdTree
 	public class IntKdTree : KdTree<int, IntNumerics> { }
 	public class ShortKdTree : KdTree<short, ShortNumerics> { }
 	public class LongKdTree : KdTree<long, LongNumerics> { }
-	public class FloatKdTree : KdTree<float, FloatNumerics> { }
+	public class FloatKdTree : KdTree<float, FloatNumerics>
+	{
+		public class Geo : Dimention<GeoLocation, GeoLocationAccessor>
+		{
+			public class Geodesics : Metric<GeoMetic> { }
+		}
+	}
 	public class DoubleKdTree : KdTree<double, DoubleNumerics> { }
 }

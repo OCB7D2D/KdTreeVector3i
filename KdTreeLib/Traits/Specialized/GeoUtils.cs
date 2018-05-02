@@ -1,4 +1,4 @@
-﻿namespace KdTree.Math
+﻿namespace KdTree
 {
     // Via http://www.geodatasource.com/developers/c-sharp
     // This code is licensed under LGPLv3.
