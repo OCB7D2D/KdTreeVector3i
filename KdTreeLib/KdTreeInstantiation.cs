@@ -10,14 +10,14 @@ namespace KdTree
 			where TArray : struct, IFixedArray<T>
 			where TArrayAccessor : struct, IFixedArrayAccessor<T, TArray>
 		{
-			public partial class Metrics<TMetrics>
-				where TMetrics : struct, IMetrics<T, TArray>
+			public partial class Metric<TMetric>
+				where TMetric : struct, IMetric<T, TArray>
 			{
 			}
 
-			public class Euclidean : Metrics<EuclideanMetrics<T, TArray, TArrayAccessor, TNumerics>> { }
-			public class Manhattan : Metrics<ManhattanMetrics<T, TArray, TArrayAccessor, TNumerics>> { }
-			public class Chebyshev : Metrics<ChebyshevMetrics<T, TArray, TArrayAccessor, TNumerics>> { }
+			public class Euclidean : Metric<EuclideanMetric<T, TArray, TArrayAccessor, TNumerics>> { }
+			public class Manhattan : Metric<ManhattanMetric<T, TArray, TArrayAccessor, TNumerics>> { }
+			public class Chebyshev : Metric<ChebyshevMetric<T, TArray, TArrayAccessor, TNumerics>> { }
 		}
 
 		public class _1 : Dimention<Fixed1<T>.Array, Fixed1<T>> { }

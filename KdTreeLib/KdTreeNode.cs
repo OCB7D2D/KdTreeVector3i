@@ -11,8 +11,8 @@ namespace KdTree
 			where TArray : struct, IFixedArray<T>
 			where TArrayAccessor : struct, IFixedArrayAccessor<T, TArray>
 		{
-			public partial class Metrics<TMetrics>
-				where TMetrics : struct, IMetrics<T, TArray>
+			public partial class Metric<TMetric>
+				where TMetric : struct, IMetric<T, TArray>
 			{
 				public partial class Tree<TValue>
 				{

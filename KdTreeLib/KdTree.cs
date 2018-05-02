@@ -14,14 +14,14 @@ namespace KdTree
 			where TArray : struct, IFixedArray<T>
 			where TArrayAccessor : struct, IFixedArrayAccessor<T, TArray>
 		{
-			public partial class Metrics<TMetrics>
-				where TMetrics : struct, IMetrics<T, TArray>
+			public partial class Metric<TMetric>
+				where TMetric : struct, IMetric<T, TArray>
 			{
 
 				[Serializable]
 				public partial class Tree<TValue> : IEnumerable<(TArray Point, TValue Value)>
 				{
-					public TMetrics Metrics;
+					public TMetric Metric;
 
 					private static readonly int Dimension = default(TArrayAccessor).Length;
 					private static bool Equals(TArray a, TArray b) => FixedArray.Equals<T, TArray, TArrayAccessor>(a, b);
@@ -310,13 +310,13 @@ namespace KdTree
 								maxSearchRadiusSquared);
 						}
 
-						var metrics = Metrics;
+						var metric = Metric;
 
 						// Walk down into the further branch but only if our capacity hasn't been reached 
 						// OR if there's a region in the further rect that's closer to the target than our
 						// current furtherest nearest neighbour
 						TArray closestPointInFurtherRect = furtherRect.GetClosestPoint(target);
-						var distanceSquaredToTarget = metrics.DistanceSquaredBetweenPoints(closestPointInFurtherRect, target);
+						var distanceSquaredToTarget = metric.DistanceSquared(closestPointInFurtherRect, target);
 
 						if (Compare(distanceSquaredToTarget, maxSearchRadiusSquared) <= 0)
 						{
@@ -333,7 +333,7 @@ namespace KdTree
 						}
 
 						// Try to add the current node to our nearest neighbours list
-						distanceSquaredToTarget = metrics.DistanceSquaredBetweenPoints(node.Point, target);
+						distanceSquaredToTarget = metric.DistanceSquared(node.Point, target);
 
 						if (Compare(distanceSquaredToTarget, maxSearchRadiusSquared) <= 0)
 							nearestNeighbours.Add((node.Point, node.Value), distanceSquaredToTarget);

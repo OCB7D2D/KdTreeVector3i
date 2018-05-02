@@ -2,13 +2,13 @@
 
 namespace KdTree
 {
-	public struct ManhattanMetrics<T, TArray, TArrayAccessor, TNumeric> : IMetrics<T, TArray>
+	public struct ManhattanMetric<T, TArray, TArrayAccessor, TNumeric> : IMetric<T, TArray>
 		where T : IComparable<T>
 		where TArray : struct, IFixedArray<T>
 		where TArrayAccessor : struct, IFixedArrayAccessor<T, TArray>
 		where TNumeric : struct, INumerics<T>
 	{
-		public T DistanceSquaredBetweenPoints(TArray a, TArray b)
+		public T DistanceSquared(TArray a, TArray b)
 		{
 			var accessor = default(TArrayAccessor);
 			var numeric = default(TNumeric);

@@ -2,9 +2,9 @@
 
 namespace KdTree
 {
-	public interface IMetrics<T, TArray>
+	public interface IMetric<T, TArray>
 		where TArray : IFixedArray<T>
 	{
-		T DistanceSquaredBetweenPoints(TArray a, TArray b);
+		T DistanceSquared(TArray a, TArray b);
 	}
 }

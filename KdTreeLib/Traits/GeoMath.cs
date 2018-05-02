@@ -18,9 +18,9 @@ namespace KdTree.Math
 		public int Length => 2;
 	}
 
-	public struct FloatGeoMetic : IMetrics<float, GeoLocation>
+	public struct FloatGeoMetic : IMetric<float, GeoLocation>
 	{
-		public float DistanceSquaredBetweenPoints(GeoLocation a, GeoLocation b)
+		public float DistanceSquared(GeoLocation a, GeoLocation b)
 		{
 			double dst = GeoUtils.Distance(a.Latitude, a.Longitude, b.Latitude, b.Longitude, 'K');
 			return (float)(dst * dst);
