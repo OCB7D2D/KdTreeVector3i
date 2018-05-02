@@ -1,56 +1,65 @@
-﻿namespace KdTree
+﻿using System;
+
+namespace KdTree
 {
-	public struct HyperRect<T, TBundle, TNumerics>
-		where TBundle : IBundle<T>
-		where TNumerics : struct, INumerics<T>
+	public struct HyperRect<T, TArray, TArrayAccessor>
+		where T : IComparable<T>
+		where TArray : struct, IFixedArray<T>
+		where TArrayAccessor : struct, IFixedArrayAccessor<T, TArray>
 	{
-		public TBundle MinPoint;
+		public TArray MinPoint;
 
-		public TBundle MaxPoint;
+		public TArray MaxPoint;
 
-		public static HyperRect<T, TBundle, TNumerics> Infinite(int dimensions)
+		public HyperRect(TArray minPoint, TArray maxPoint) => (MinPoint, MaxPoint) = (minPoint, maxPoint);
+
+		private static readonly int Dimension = default(TArrayAccessor).Length;
+
+		public static HyperRect<T, TArray, TArrayAccessor> Infinite<TNumerics>()
+			where TNumerics : struct, INumerics<T>
 		{
-			var rect = new HyperRect<T, TBundle, TNumerics>();
+			var accessor = default(TArrayAccessor);
+			var numerics = default(TNumerics);
+			var dim = Dimension;
 
-			for (var dimension = 0; dimension < dimensions; dimension++)
+			var rect = new HyperRect<T, TArray, TArrayAccessor>();
+
+			for (int i = 0; i < dim; i++)
 			{
-				rect.MinPoint[dimension] = default(TNumerics).NegativeInfinity;
-				rect.MaxPoint[dimension] = default(TNumerics).PositiveInfinity;
+				accessor.At(ref rect.MinPoint, i) = numerics.NegativeInfinity;
+				accessor.At(ref rect.MaxPoint, i) = numerics.PositiveInfinity;
 			}
 
 			return rect;
 		}
 
-		public TBundle GetClosestPoint(TBundle toPoint)
+		public TArray GetClosestPoint(TArray toPoint)
 		{
-			TBundle closest = default(TBundle);
+			var accessor = default(TArrayAccessor);
+			var dim = Dimension;
+			TArray closest = default;
 
-			for (var dimension = 0; dimension < toPoint.Length; dimension++)
+			for (var dimension = 0; dimension < dim; dimension++)
 			{
-				if (default(TNumerics).Compare(MinPoint[dimension], toPoint[dimension]) > 0)
+				var min = accessor.At(ref MinPoint, dimension);
+				var max = accessor.At(ref MaxPoint, dimension);
+				var to = accessor.At(ref toPoint, dimension);
+				ref var c = ref accessor.At(ref closest, dimension);
+
+				if (min.CompareTo(to) > 0)
 				{
-					closest[dimension] = MinPoint[dimension];
+					c = min;
 				}
-				else if (default(TNumerics).Compare(MaxPoint[dimension], toPoint[dimension]) < 0)
+				else if (max.CompareTo(to) < 0)
 				{
-					closest[dimension] = MaxPoint[dimension];
+					c = max;
 				}
 				else
 					// Point is within rectangle, at least on this dimension
-					closest[dimension] = toPoint[dimension];
+					c = to;
 			}
 
 			return closest;
-		}
-
-		public HyperRect<T, TBundle, TNumerics> Clone()
-		{
-			var rect = new HyperRect<T, TBundle, TNumerics>
-			{
-				MinPoint = MinPoint,
-				MaxPoint = MaxPoint
-			};
-			return rect;
 		}
 	}
 }
