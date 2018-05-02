@@ -1,6 +1,6 @@
 ﻿namespace KdTree.Math
 {
-	public struct EuclideanMetic<T, TArray, TArrayAccessor, TNumeric> : IMetrics<T, TArray>
+	public struct EuclideanMetrics<T, TArray, TArrayAccessor, TNumeric> : IMetrics<T, TArray>
 		where TArray : struct, IFixedArray<T>
 		where TArrayAccessor : struct, IFixedArrayAccessor<T, TArray>
 		where TNumeric : struct, INumerics<T>

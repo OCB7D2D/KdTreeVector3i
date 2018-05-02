@@ -100,22 +100,4 @@ namespace KdTree
 			}
 		}
 	}
-
-	public partial class KdTree<TKey, TValue, TKeyArray, TKeyArrayAccessor, TNumerics, TMetrics>
-	{
-		public static NearestNeighbourList<(TKeyArray Key, TValue Value), TKey>.List CreateNearestNeighbourList()
-			=> new NearestNeighbourList<(TKeyArray Key, TValue Value), TKey>.List();
-
-		public static NearestNeighbourList<(TKeyArray Key, TValue Value), TKey>.List CreateNearestNeighbourList(int maxCount)
-			=> new NearestNeighbourList<(TKeyArray Key, TValue Value), TKey>.List(maxCount);
-
-		public static NearestNeighbourList<(TKeyArray Key, TValue Value), TKey>.List CreateNearestNeighbourList(int maxCount, int capacity)
-			=> new NearestNeighbourList<(TKeyArray Key, TValue Value), TKey>.List(maxCount, capacity);
-
-		public static NearestNeighbourList<(TKeyArray Key, TValue Value), TKey>.UnlimitedList CreateUnlimitedList()
-			=> new NearestNeighbourList<(TKeyArray Key, TValue Value), TKey>.UnlimitedList();
-
-		public static NearestNeighbourList<(TKeyArray Key, TValue Value), TKey>.UnlimitedList CreateUnlimitedList(int capacity)
-			=> new NearestNeighbourList<(TKeyArray Key, TValue Value), TKey>.UnlimitedList(capacity);
-	}
 }

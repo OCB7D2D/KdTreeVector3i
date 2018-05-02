@@ -2,8 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Tree = KdTree.KdTree<float, string, KdTree.Fixed2<float>.Array, KdTree.Fixed2<float>, KdTree.Math.FloatMath, KdTree.Math.EuclideanMetic<float, KdTree.Fixed2<float>.Array, KdTree.Fixed2<float>, KdTree.Math.FloatMath>>;
-using Node = KdTree.KdTree<float, string, KdTree.Fixed2<float>.Array, KdTree.Fixed2<float>, KdTree.Math.FloatMath, KdTree.Math.EuclideanMetic<float, KdTree.Fixed2<float>.Array, KdTree.Fixed2<float>, KdTree.Math.FloatMath>>.Node;
+using Tree = KdTree.FloatKdTreeFactory._2.Euclidean.Tree<string>;
+using Node = KdTree.FloatKdTreeFactory._2.Euclidean.Tree<string>.Node;
 
 struct City
 {
