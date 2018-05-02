@@ -4,24 +4,6 @@ using Tree = KdTree.FloatKdTree._2.Euclidean.Tree<int>;
 
 namespace KdTreeBenchmark
 {
-	//struct FloatChebyshevMetrics : IMetrics<float, FloatPair>
-	//{
-	//	public float DistanceSquaredBetweenPoints(FloatPair a, FloatPair b)
-	//	{
-	//		var max = 0.0f;
-	//		for (int i = 0; i < a.Length; i++)
-	//		{
-	//			var diff = a[i] - b[i];
-	//			var squared = diff * diff;
-	//			if (max < squared) max = squared;
-	//		}
-	//		return max;
-	//	}
-
-	//	public bool Equals(FloatPair x, FloatPair y) => x.X == y.X && x.Y == y.Y;
-	//	public int GetHashCode(FloatPair obj) => obj.GetHashCode();
-	//}
-
 	[MemoryDiagnoser]
 	public class KdTreeBenchmark
 	{

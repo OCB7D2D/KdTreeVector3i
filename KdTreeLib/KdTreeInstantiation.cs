@@ -15,7 +15,9 @@ namespace KdTree
 			{
 			}
 
-			public class Euclidean : Metrics<Math.EuclideanMetrics<T, TArray, TArrayAccessor, TNumerics>> { }
+			public class Euclidean : Metrics<EuclideanMetrics<T, TArray, TArrayAccessor, TNumerics>> { }
+			public class Manhattan : Metrics<ManhattanMetrics<T, TArray, TArrayAccessor, TNumerics>> { }
+			public class Chebyshev : Metrics<ChebyshevMetrics<T, TArray, TArrayAccessor, TNumerics>> { }
 		}
 
 		public class _1 : Dimention<Fixed1<T>.Array, Fixed1<T>> { }
