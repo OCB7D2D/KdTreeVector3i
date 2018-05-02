@@ -1,19 +1,8 @@
-﻿namespace KdTree
+﻿using System;
+using System.Runtime.CompilerServices;
+
+namespace KdTree
 {
-	using System;
-	using System.Runtime.CompilerServices;
-
-	public interface IFixedArray<T> { }
-
-	public interface IFixedArrayAccessor<T, TArray>
-		where TArray : struct, IFixedArray<T>
-	{
-		TArray New();
-		Span<T> AsSpan(ref TArray array);
-		ref T At(ref TArray array, int i);
-		int Length { get; }
-	}
-
 	// consider using T4 template if you want higher dimensions.
 
 	public struct Fixed1<T> : IFixedArrayAccessor<T, Fixed1<T>.Array>
