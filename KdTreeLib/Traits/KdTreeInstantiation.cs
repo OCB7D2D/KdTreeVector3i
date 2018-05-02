@@ -23,6 +23,7 @@ namespace KdTree
 		public class _1 : Dimention<Fixed1<T>.Array, Fixed1<T>> { }
 		public class _2 : Dimention<Fixed2<T>.Array, Fixed2<T>> { }
 		public class _3 : Dimention<Fixed3<T>.Array, Fixed3<T>> { }
+		public class _4 : Dimention<Fixed4<T>.Array, Fixed4<T>> { }
 	}
 
 	public class IntKdTree : KdTree<int, IntNumerics> { }
