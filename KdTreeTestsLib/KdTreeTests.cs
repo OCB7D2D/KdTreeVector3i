@@ -2,8 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Tree = KdTree.FloatKdTree._2.Euclidean.Tree<string>;
-using Node = KdTree.FloatKdTree._2.Euclidean.Tree<string>.Node;
+using Tree = KdTree.Float._2.Euclidean.Tree<string>;
+using Node = KdTree.Float._2.Euclidean.Tree<string>.Node;
 
 struct City
 {

@@ -2,7 +2,7 @@
 
 namespace KdTree
 {
-	public partial class KdTree<T, TArithmetic>
+	public partial class Point<T, TArithmetic>
 		where T : IComparable<T>, IEquatable<T>
 		where TArithmetic : struct, IArithmetic<T>
 	{
@@ -30,15 +30,15 @@ namespace KdTree
 		public class _4 : Dimention<Fixed4<T>.Array, Fixed4<T>> { }
 	}
 
-	public class IntKdTree : KdTree<int, IntArithmetic> { }
-	public class ShortKdTree : KdTree<short, ShortArithmetic> { }
-	public class LongKdTree : KdTree<long, LongArithmetic> { }
-	public class FloatKdTree : KdTree<float, FloatArithmetic>
+	public class Int : Point<int, IntArithmetic> { }
+	public class Short : Point<short, ShortArithmetic> { }
+	public class Long : Point<long, LongArithmetic> { }
+	public class Float : Point<float, FloatArithmetic>
 	{
 		public class Geo : Dimention<GeoLocation, GeoLocationAccessor>
 		{
 			public class Geodesics : Metric<GeoMetic> { }
 		}
 	}
-	public class DoubleKdTree : KdTree<double, DoubleArithmetic> { }
+	public class Double : Point<double, DoubleArithmetic> { }
 }

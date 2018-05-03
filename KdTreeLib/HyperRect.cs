@@ -1,6 +1,6 @@
 ﻿namespace KdTree
 {
-	public partial class KdTree<T, TArithmetic>
+	public partial class Point<T, TArithmetic>
 	{
 		public partial class Dimention<TArray, TArrayAccessor>
 		{

@@ -1,6 +1,6 @@
 ﻿using BenchmarkDotNet.Attributes;
 using System;
-using Tree = KdTree.FloatKdTree._2.Euclidean.Tree<int>;
+using Tree = KdTree.Float._2.Euclidean.Tree<int>;
 
 namespace KdTreeBenchmark
 {
