@@ -192,7 +192,7 @@ namespace KdTree
 
 					public void GetNearestNeighbours(TArray point, NearestNeighbourList<(TArray Key, TValue Value), T>.INearestNeighbourList results)
 					{
-						var rect = HyperRect.Infinite();
+						var rect = HyperRect.Infinite;
 						AddNearestNeighbours(root, point, rect, 0, results, _arithmetic.MaxValue);
 					}
 
@@ -211,7 +211,7 @@ namespace KdTree
 
 						var nearestNeighbours = CreateNearestNeighbourList(count);
 
-						var rect = HyperRect.Infinite();
+						var rect = HyperRect.Infinite;
 
 						AddNearestNeighbours(root, point, rect, 0, nearestNeighbours, _arithmetic.MaxValue);
 
@@ -352,7 +352,7 @@ namespace KdTree
 						AddNearestNeighbours(
 							root,
 							center,
-							HyperRect.Infinite(),
+							HyperRect.Infinite,
 							0,
 							results,
 							_arithmetic.Multiply(radius, radius));

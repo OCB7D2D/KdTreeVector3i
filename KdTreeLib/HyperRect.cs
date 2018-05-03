@@ -7,14 +7,13 @@
 			public struct HyperRect
 			{
 				public TArray MinPoint;
-
 				public TArray MaxPoint;
 
 				public HyperRect(TArray minPoint, TArray maxPoint) => (MinPoint, MaxPoint) = (minPoint, maxPoint);
 
 				private static readonly int Dimension = default(TArrayAccessor).Length;
 
-				public static HyperRect Infinite()
+				static HyperRect()
 				{
 					var accessor = default(TArrayAccessor);
 					var arithmetic = default(TArithmetic);
@@ -28,8 +27,10 @@
 						accessor.At(ref rect.MaxPoint, i) = arithmetic.PositiveInfinity;
 					}
 
-					return rect;
+					Infinite = rect;
 				}
+
+				public static readonly HyperRect Infinite;
 
 				public TArray GetClosestPoint(TArray toPoint)
 				{
