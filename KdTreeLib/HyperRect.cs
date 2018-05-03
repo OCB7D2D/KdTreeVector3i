@@ -1,16 +1,9 @@
-﻿using System;
-
-namespace KdTree
+﻿namespace KdTree
 {
 	public partial class KdTree<T, TArithmetic>
-		where T : IComparable<T>, IEquatable<T>
-		where TArithmetic : struct, IArithmetic<T>
 	{
 		public partial class Dimention<TArray, TArrayAccessor>
-			where TArray : struct, IFixedArray<T>
-			where TArrayAccessor : struct, IFixedArrayAccessor<T, TArray>
 		{
-
 			public struct HyperRect
 			{
 				public TArray MinPoint;

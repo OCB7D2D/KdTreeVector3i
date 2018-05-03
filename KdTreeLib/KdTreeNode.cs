@@ -4,15 +4,10 @@ using System.Text;
 namespace KdTree
 {
 	public partial class KdTree<T, TArithmetic>
-		where T : IComparable<T>, IEquatable<T>
-		where TArithmetic : struct, IArithmetic<T>
 	{
 		public partial class Dimention<TArray, TArrayAccessor>
-			where TArray : struct, IFixedArray<T>
-			where TArrayAccessor : struct, IFixedArrayAccessor<T, TArray>
 		{
 			public partial class Metric<TMetric>
-				where TMetric : struct, IMetric<T, TArray>
 			{
 				public partial class Tree<TValue>
 				{

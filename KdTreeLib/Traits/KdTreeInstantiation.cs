@@ -6,10 +6,14 @@ namespace KdTree
 		where T : IComparable<T>, IEquatable<T>
 		where TArithmetic : struct, IArithmetic<T>
 	{
+		private static readonly TArithmetic _arithmetic = default;
+
 		public partial class Dimention<TArray, TArrayAccessor>
 			where TArray : struct, IFixedArray<T>
 			where TArrayAccessor : struct, IFixedArrayAccessor<T, TArray>
 		{
+			private static readonly TArrayAccessor _accessor = default;
+
 			public partial class Metric<TMetric>
 				where TMetric : struct, IMetric<T, TArray>
 			{
