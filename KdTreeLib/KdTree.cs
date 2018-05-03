@@ -10,20 +10,23 @@ namespace KdTree
 		where T : IComparable<T>, IEquatable<T>
 		where TArithmetic : struct, IArithmetic<T>
 	{
+		private static readonly TArithmetic _arithmetic = default;
+
 		public partial class Dimention<TArray, TArrayAccessor>
 			where TArray : struct, IFixedArray<T>
 			where TArrayAccessor : struct, IFixedArrayAccessor<T, TArray>
 		{
+			private static readonly TArrayAccessor _accessor = default;
+
 			public partial class Metric<TMetric>
 				where TMetric : struct, IMetric<T, TArray>
 			{
-
 				[Serializable]
 				public partial class Tree<TValue> : IEnumerable<(TArray Point, TValue Value)>
 				{
 					public TMetric Metric;
 
-					private static readonly int Dimension = default(TArrayAccessor).Length;
+					private static readonly int Dimension = _accessor.Length;
 					private static bool Equals(TArray a, TArray b) => FixedArray<T, TArray, TArrayAccessor>.Equals(a, b);
 					private static int Compare(T a, T b) => a.CompareTo(b);
 
@@ -169,7 +172,6 @@ namespace KdTree
 							return;
 						}
 
-						var accessor = default(TArrayAccessor);
 						node = root;
 
 						int dimension = -1;
@@ -177,7 +179,7 @@ namespace KdTree
 						{
 							dimension = Increment(dimension);
 
-							int compare = Compare(accessor.At(ref point, dimension), accessor.At(ref node.Point, dimension));
+							int compare = Compare(_accessor.At(ref point, dimension), _accessor.At(ref node.Point, dimension));
 
 							if (node[compare] == null)
 								// Can't find node
@@ -200,7 +202,7 @@ namespace KdTree
 					public void GetNearestNeighbours(TArray point, NearestNeighbourList<(TArray Key, TValue Value), T>.INearestNeighbourList results)
 					{
 						var rect = HyperRect.Infinite();
-						AddNearestNeighbours(root, point, rect, 0, results, default(TArithmetic).MaxValue);
+						AddNearestNeighbours(root, point, rect, 0, results, _arithmetic.MaxValue);
 					}
 
 					public (TArray Key, TValue Value)[] GetNearestNeighbours(TArray point, int count = int.MaxValue)
@@ -220,7 +222,7 @@ namespace KdTree
 
 						var rect = HyperRect.Infinite();
 
-						AddNearestNeighbours(root, point, rect, 0, nearestNeighbours, default(TArithmetic).MaxValue);
+						AddNearestNeighbours(root, point, rect, 0, nearestNeighbours, _arithmetic.MaxValue);
 
 						count = nearestNeighbours.Count;
 
@@ -278,19 +280,18 @@ namespace KdTree
 						// Work out the current dimension
 						int dimension = depth % Dimension;
 
-						var accessor = default(TArrayAccessor);
-						var nodeKey = accessor.At(ref node.Point, dimension);
+						var nodeKey = _accessor.At(ref node.Point, dimension);
 
 						// Split our hyper-rect into 2 sub rects along the current 
 						// node's point on the current dimension
 						var leftRect = rect;
-						accessor.At(ref leftRect.MaxPoint, dimension) = nodeKey;
+						_accessor.At(ref leftRect.MaxPoint, dimension) = nodeKey;
 
 						var rightRect = rect;
-						accessor.At(ref rightRect.MinPoint, dimension) = nodeKey;
+						_accessor.At(ref rightRect.MinPoint, dimension) = nodeKey;
 
 						// Which side does the target reside in?
-						int compare = Compare(accessor.At(ref target, dimension), nodeKey);
+						int compare = Compare(_accessor.At(ref target, dimension), nodeKey);
 
 						var nearerRect = compare <= 0 ? leftRect : rightRect;
 						var furtherRect = compare <= 0 ? rightRect : leftRect;
@@ -363,7 +364,7 @@ namespace KdTree
 							HyperRect.Infinite(),
 							0,
 							results,
-							default(TArithmetic).Multiply(radius, radius));
+							_arithmetic.Multiply(radius, radius));
 					}
 
 					public int Count { get; private set; }
@@ -372,7 +373,6 @@ namespace KdTree
 					{
 						var parent = root;
 						int dimension = -1;
-						var accessor = default(TArrayAccessor);
 						do
 						{
 							if (parent == null)
@@ -388,7 +388,7 @@ namespace KdTree
 
 							// Keep searching
 							dimension = Increment(dimension);
-							int compare = Compare(accessor.At(ref point, dimension), accessor.At(ref parent.Point, dimension));
+							int compare = Compare(_accessor.At(ref point, dimension), _accessor.At(ref parent.Point, dimension));
 							parent = parent[compare];
 						}
 						while (true);
@@ -495,7 +495,6 @@ namespace KdTree
 
 					private void SortNodesArray(Node[] nodes, int byDimension, int fromIndex, int toIndex)
 					{
-						var accessor = default(TArrayAccessor);
 						for (var index = fromIndex + 1; index <= toIndex; index++)
 						{
 							var newIndex = index;
@@ -504,7 +503,7 @@ namespace KdTree
 							{
 								var a = nodes[newIndex - 1];
 								var b = nodes[newIndex];
-								if (Compare(accessor.At(ref b.Point, byDimension), accessor.At(ref a.Point, byDimension)) < 0)
+								if (Compare(_accessor.At(ref b.Point, byDimension), _accessor.At(ref a.Point, byDimension)) < 0)
 								{
 									nodes[newIndex - 1] = b;
 									nodes[newIndex] = a;
