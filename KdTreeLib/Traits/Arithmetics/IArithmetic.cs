@@ -1,6 +1,6 @@
 ﻿namespace KdTree
 {
-	public interface INumerics<T>
+	public interface IArithmetic<T>
 	{
 		T MinValue { get; }
 		T MaxValue { get; }

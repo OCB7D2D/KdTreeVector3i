@@ -2,33 +2,33 @@
 
 namespace KdTree
 {
-	public struct ManhattanMetric<T, TArray, TArrayAccessor, TNumeric> : IMetric<T, TArray>
+	public struct ManhattanMetric<T, TArray, TArrayAccessor, TArithmetic> : IMetric<T, TArray>
 		where T : IComparable<T>
 		where TArray : struct, IFixedArray<T>
 		where TArrayAccessor : struct, IFixedArrayAccessor<T, TArray>
-		where TNumeric : struct, INumerics<T>
+		where TArithmetic : struct, IArithmetic<T>
 	{
 		public T DistanceSquared(TArray a, TArray b)
 		{
 			var accessor = default(TArrayAccessor);
-			var numeric = default(TNumeric);
+			var arithmetic = default(TArithmetic);
 
-			T distance = numeric.Zero;
+			T distance = arithmetic.Zero;
 			var dim = accessor.Length;
 
 			for (var i = 0; i < dim; i++)
 			{
-				T distOnThisAxis = numeric.Subtract(accessor.At(ref a, i), accessor.At(ref b, i));
-				distance = numeric.Add(distance, Abs(distOnThisAxis));
+				T distOnThisAxis = arithmetic.Subtract(accessor.At(ref a, i), accessor.At(ref b, i));
+				distance = arithmetic.Add(distance, Abs(distOnThisAxis));
 			}
 
-			return numeric.Multiply(distance, distance);
+			return arithmetic.Multiply(distance, distance);
 		}
 
 		private static T Abs(T x)
 		{
-			var numeric = default(TNumeric);
-			if (x.CompareTo(numeric.Zero) < 0) return numeric.Subtract(numeric.Zero, x);
+			var arithmetic = default(TArithmetic);
+			if (x.CompareTo(arithmetic.Zero) < 0) return arithmetic.Subtract(arithmetic.Zero, x);
 			return x;
 		}
 	}

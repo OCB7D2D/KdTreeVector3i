@@ -15,19 +15,19 @@ namespace KdTree
 
 		private static readonly int Dimension = default(TArrayAccessor).Length;
 
-		public static HyperRect<T, TArray, TArrayAccessor> Infinite<TNumerics>()
-			where TNumerics : struct, INumerics<T>
+		public static HyperRect<T, TArray, TArrayAccessor> Infinite<TArithmetic>()
+			where TArithmetic : struct, IArithmetic<T>
 		{
 			var accessor = default(TArrayAccessor);
-			var numerics = default(TNumerics);
+			var arithmetic = default(TArithmetic);
 			var dim = Dimension;
 
 			var rect = new HyperRect<T, TArray, TArrayAccessor>();
 
 			for (int i = 0; i < dim; i++)
 			{
-				accessor.At(ref rect.MinPoint, i) = numerics.NegativeInfinity;
-				accessor.At(ref rect.MaxPoint, i) = numerics.PositiveInfinity;
+				accessor.At(ref rect.MinPoint, i) = arithmetic.NegativeInfinity;
+				accessor.At(ref rect.MaxPoint, i) = arithmetic.PositiveInfinity;
 			}
 
 			return rect;

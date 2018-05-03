@@ -2,9 +2,9 @@
 
 namespace KdTree
 {
-	public partial class KdTree<T, TNumerics>
+	public partial class KdTree<T, TArithmetic>
 		where T : IComparable<T>, IEquatable<T>
-		where TNumerics : struct, INumerics<T>
+		where TArithmetic : struct, IArithmetic<T>
 	{
 		public partial class Dimention<TArray, TArrayAccessor>
 			where TArray : struct, IFixedArray<T>
@@ -15,9 +15,9 @@ namespace KdTree
 			{
 			}
 
-			public class Euclidean : Metric<EuclideanMetric<T, TArray, TArrayAccessor, TNumerics>> { }
-			public class Manhattan : Metric<ManhattanMetric<T, TArray, TArrayAccessor, TNumerics>> { }
-			public class Chebyshev : Metric<ChebyshevMetric<T, TArray, TArrayAccessor, TNumerics>> { }
+			public class Euclidean : Metric<EuclideanMetric<T, TArray, TArrayAccessor, TArithmetic>> { }
+			public class Manhattan : Metric<ManhattanMetric<T, TArray, TArrayAccessor, TArithmetic>> { }
+			public class Chebyshev : Metric<ChebyshevMetric<T, TArray, TArrayAccessor, TArithmetic>> { }
 		}
 
 		public class _1 : Dimention<Fixed1<T>.Array, Fixed1<T>> { }
@@ -26,15 +26,15 @@ namespace KdTree
 		public class _4 : Dimention<Fixed4<T>.Array, Fixed4<T>> { }
 	}
 
-	public class IntKdTree : KdTree<int, IntNumerics> { }
-	public class ShortKdTree : KdTree<short, ShortNumerics> { }
-	public class LongKdTree : KdTree<long, LongNumerics> { }
-	public class FloatKdTree : KdTree<float, FloatNumerics>
+	public class IntKdTree : KdTree<int, IntArithmetic> { }
+	public class ShortKdTree : KdTree<short, ShortArithmetic> { }
+	public class LongKdTree : KdTree<long, LongArithmetic> { }
+	public class FloatKdTree : KdTree<float, FloatArithmetic>
 	{
 		public class Geo : Dimention<GeoLocation, GeoLocationAccessor>
 		{
 			public class Geodesics : Metric<GeoMetic> { }
 		}
 	}
-	public class DoubleKdTree : KdTree<double, DoubleNumerics> { }
+	public class DoubleKdTree : KdTree<double, DoubleArithmetic> { }
 }

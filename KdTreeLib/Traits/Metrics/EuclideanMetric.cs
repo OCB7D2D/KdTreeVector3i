@@ -1,23 +1,23 @@
 ﻿namespace KdTree
 {
-	public struct EuclideanMetric<T, TArray, TArrayAccessor, TNumeric> : IMetric<T, TArray>
+	public struct EuclideanMetric<T, TArray, TArrayAccessor, TArithmetic> : IMetric<T, TArray>
 		where TArray : struct, IFixedArray<T>
 		where TArrayAccessor : struct, IFixedArrayAccessor<T, TArray>
-		where TNumeric : struct, INumerics<T>
+		where TArithmetic : struct, IArithmetic<T>
 	{
 		public T DistanceSquared(TArray a, TArray b)
 		{
 			var accessor = default(TArrayAccessor);
-			var numeric = default(TNumeric);
+			var arithmetic = default(TArithmetic);
 
-			T distance = numeric.Zero;
+			T distance = arithmetic.Zero;
 			var dim = accessor.Length;
 
 			for (var i = 0; i < dim; i++)
 			{
-				T distOnThisAxis = numeric.Subtract(accessor.At(ref a, i), accessor.At(ref b, i));
-				T distOnThisAxisSquared = numeric.Multiply(distOnThisAxis, distOnThisAxis);
-				distance = numeric.Add(distance, distOnThisAxisSquared);
+				T distOnThisAxis = arithmetic.Subtract(accessor.At(ref a, i), accessor.At(ref b, i));
+				T distOnThisAxisSquared = arithmetic.Multiply(distOnThisAxis, distOnThisAxis);
+				distance = arithmetic.Add(distance, distOnThisAxisSquared);
 			}
 
 			return distance;

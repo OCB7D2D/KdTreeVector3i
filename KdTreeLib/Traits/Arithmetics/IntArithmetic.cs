@@ -1,6 +1,6 @@
 ﻿namespace KdTree
 {
-	public struct IntNumerics : INumerics<int>
+	public struct IntArithmetic : IArithmetic<int>
 	{
 		public int MinValue => int.MinValue;
 		public int MaxValue => int.MaxValue;
@@ -12,7 +12,7 @@
 		public int Multiply(int a, int b) => a * b;
 	}
 
-	public struct ShortNumerics : INumerics<short>
+	public struct ShortArithmetic : IArithmetic<short>
 	{
 		public short MinValue => short.MinValue;
 		public short MaxValue => short.MaxValue;
@@ -24,7 +24,7 @@
 		public short Multiply(short a, short b) => (short)(a * b);
 	}
 
-	public struct LongNumerics : INumerics<long>
+	public struct LongArithmetic : IArithmetic<long>
 	{
 		public long MinValue => long.MinValue;
 		public long MaxValue => long.MaxValue;

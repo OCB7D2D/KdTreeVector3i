@@ -3,9 +3,9 @@ using System.Text;
 
 namespace KdTree
 {
-	public partial class KdTree<T, TNumerics>
+	public partial class KdTree<T, TArithmetic>
 		where T : IComparable<T>, IEquatable<T>
-		where TNumerics : struct, INumerics<T>
+		where TArithmetic : struct, IArithmetic<T>
 	{
 		public partial class Dimention<TArray, TArrayAccessor>
 			where TArray : struct, IFixedArray<T>

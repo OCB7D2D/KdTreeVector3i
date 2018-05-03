@@ -1,6 +1,6 @@
 ﻿namespace KdTree
 {
-	public struct FloatNumerics : INumerics<float>
+	public struct FloatArithmetic : IArithmetic<float>
 	{
 		public float MinValue => float.MinValue;
 		public float MaxValue => float.MaxValue;

@@ -6,9 +6,9 @@ using System.Text;
 
 namespace KdTree
 {
-	public partial class KdTree<T, TNumerics>
+	public partial class KdTree<T, TArithmetic>
 		where T : IComparable<T>, IEquatable<T>
-		where TNumerics : struct, INumerics<T>
+		where TArithmetic : struct, IArithmetic<T>
 	{
 		public partial class Dimention<TArray, TArrayAccessor>
 			where TArray : struct, IFixedArray<T>
@@ -199,8 +199,8 @@ namespace KdTree
 
 					public void GetNearestNeighbours(TArray point, NearestNeighbourList<(TArray Key, TValue Value), T>.INearestNeighbourList results)
 					{
-						var rect = HyperRect<T, TArray, TArrayAccessor>.Infinite<TNumerics>();
-						AddNearestNeighbours(root, point, rect, 0, results, default(TNumerics).MaxValue);
+						var rect = HyperRect<T, TArray, TArrayAccessor>.Infinite<TArithmetic>();
+						AddNearestNeighbours(root, point, rect, 0, results, default(TArithmetic).MaxValue);
 					}
 
 					public (TArray Key, TValue Value)[] GetNearestNeighbours(TArray point, int count = int.MaxValue)
@@ -218,9 +218,9 @@ namespace KdTree
 
 						var nearestNeighbours = CreateNearestNeighbourList(count);
 
-						var rect = HyperRect<T, TArray, TArrayAccessor>.Infinite<TNumerics>();
+						var rect = HyperRect<T, TArray, TArrayAccessor>.Infinite<TArithmetic>();
 
-						AddNearestNeighbours(root, point, rect, 0, nearestNeighbours, default(TNumerics).MaxValue);
+						AddNearestNeighbours(root, point, rect, 0, nearestNeighbours, default(TArithmetic).MaxValue);
 
 						count = nearestNeighbours.Count;
 
@@ -360,10 +360,10 @@ namespace KdTree
 						AddNearestNeighbours(
 							root,
 							center,
-							HyperRect<T, TArray, TArrayAccessor>.Infinite<TNumerics>(),
+							HyperRect<T, TArray, TArrayAccessor>.Infinite<TArithmetic>(),
 							0,
 							results,
-							default(TNumerics).Multiply(radius, radius));
+							default(TArithmetic).Multiply(radius, radius));
 					}
 
 					public int Count { get; private set; }
