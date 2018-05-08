@@ -74,7 +74,7 @@ namespace KdTree
 
 										case AddDuplicateBehavior.Update:
 											parent.Value = value;
-											break;
+											return true;
 
 										default:
 											// Should never happen
