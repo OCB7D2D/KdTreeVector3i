@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
-using NeighbourList = KdTree.NearestNeighbourList<Planet, float>.List;
+using NeighbourList = KdTree3.NearestNeighbourList<Planet, float>.List;
 
 struct Planet
 {
@@ -9,7 +9,7 @@ struct Planet
 	public float DistanceFromEarth;
 }
 
-namespace KdTree.Tests
+namespace KdTree3.Tests
 {
 	[TestClass]
 	public class NearestNeighbourListTests

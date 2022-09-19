@@ -1,15 +1,14 @@
 ﻿using System;
 
-namespace KdTree
+namespace KdTree3
 {
-	public class PriorityQueue<TItem, TPriority>
-		where TPriority : IComparable<TPriority>
+	public class PriorityQueue<TItem>
 	{
 		struct ItemPriority
 		{
 			public TItem Item;
-			public TPriority Priority;
-			public ItemPriority(TItem item, TPriority priority) => (Item, Priority) = (item, priority);
+			public int Priority;
+			public ItemPriority(TItem item, int priority) => (Item, Priority) = (item, priority);
 		}
 
 		private ItemPriority[] _items;
@@ -104,7 +103,7 @@ namespace KdTree
 			return result;
 		}
 
-		public void Enqueue(TItem item, TPriority priority)
+		public void Enqueue(TItem item, int priority)
 		{
 			if (Count >= _items.Length)
 			{
@@ -126,7 +125,7 @@ namespace KdTree
 				return _items[0].Item;
 		}
 
-		public TPriority GetHighestPriority()
+		public int GetHighestPriority()
 		{
 			if (Count == 0)
 				throw new Exception("Queue is empty");

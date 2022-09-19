@@ -8,7 +8,7 @@ struct Person
 	public int Age;
 }
 
-namespace KdTree.Tests
+namespace KdTree3.Tests
 {
 	[TestClass]
 	public class PriorityQueueTests

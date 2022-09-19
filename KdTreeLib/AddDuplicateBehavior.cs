@@ -1,4 +1,4 @@
-﻿namespace KdTree
+﻿namespace KdTree3
 {
 	public enum AddDuplicateBehavior
 	{

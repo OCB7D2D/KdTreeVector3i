@@ -1,6 +1,6 @@
 ﻿using BenchmarkDotNet.Attributes;
 using System;
-using Tree = KdTree.Float._2.Euclidean.Tree<int>;
+using Tree = KdTree3.KdTree<KdTree3.MetricChebyshev>.Vector3i<int>;
 
 namespace KdTreeBenchmark
 {
@@ -9,37 +9,41 @@ namespace KdTreeBenchmark
 	{
 		private const int NumItems = 10000;
 		private const int NumSearchIteration = 1000;
-		private const float Min = -1000;
-		private const float Max = 1000;
-
-		private static float Next(Random rand, float min, float max) => (float)((max - min) * rand.NextDouble() + min);
-		private static float Next(Random rand) => Next(rand, Min, Max);
+		private const int Min = -1000;
+		private const int Max = 1000;
 
 		[Benchmark]
 		public void RadialSearch()
 		{
-			var rand = new Random(1);
+			var rand = new Random(42);
 			var tree = new Tree();
 
 			for (int i = 0; i < NumItems; i++)
 			{
-				var x = Next(rand);
-				var y = Next(rand);
-
-				tree.Add((x, y), i);
+				var position = new global::Vector3i(
+					rand.Next(Min, Max),
+					rand.Next(Min, Max),
+					rand.Next(Min, Max));
+				tree.Add(position, i);
 			}
 
 			var list = Tree.CreateUnlimitedList();
 
+			int count = 0;
+
 			for (int i = 0; i < NumSearchIteration; i++)
 			{
-				var x = Next(rand);
-				var y = Next(rand);
-				var radius = Next(rand, 5, 100);
+				var position = new global::Vector3i(
+					rand.Next(Min, Max),
+					rand.Next(Min, Max),
+					rand.Next(Min, Max));
+				var radius = rand.Next(5, 100);
 
 				list.Clear();
-				tree.RadialSearch((x, y), radius, list);
+				tree.RadialSearch(position, radius, list);
+				count += list.Count;
 			}
+			if (count != 2631) Console.WriteLine(count);
 		}
 	}
 }

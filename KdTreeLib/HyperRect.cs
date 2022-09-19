@@ -1,66 +1,39 @@
-﻿namespace KdTree
+﻿namespace KdTree3
 {
-	public partial class Point<T, TArithmetic>
+
+	public partial class KdTree<TMetric>
+		where TMetric : IMetric
 	{
-		public partial class Dimention<TArray, TArrayAccessor>
+		public struct HyperRect
 		{
-			public struct HyperRect
+			public Vector3i MinPoint;
+			public Vector3i MaxPoint;
+
+			public HyperRect(Vector3i minPoint, Vector3i maxPoint)
+				=> (MinPoint, MaxPoint) = (minPoint, maxPoint);
+
+			static HyperRect()
 			{
-				public TArray MinPoint;
-				public TArray MaxPoint;
-
-				public HyperRect(TArray minPoint, TArray maxPoint) => (MinPoint, MaxPoint) = (minPoint, maxPoint);
-
-				private static readonly int Dimension = default(TArrayAccessor).Length;
-
-				static HyperRect()
+				Infinite = new HyperRect()
 				{
-					var accessor = default(TArrayAccessor);
-					var arithmetic = default(TArithmetic);
-					var dim = Dimension;
+					MinPoint = new Vector3i(int.MinValue, int.MinValue, int.MinValue),
+					MaxPoint = new Vector3i(int.MaxValue, int.MaxValue, int.MaxValue)
+				};
+			}
 
-					var rect = new HyperRect();
+			public static readonly HyperRect Infinite;
 
-					for (int i = 0; i < dim; i++)
-					{
-						accessor.At(ref rect.MinPoint, i) = arithmetic.NegativeInfinity;
-						accessor.At(ref rect.MaxPoint, i) = arithmetic.PositiveInfinity;
-					}
-
-					Infinite = rect;
-				}
-
-				public static readonly HyperRect Infinite;
-
-				public TArray GetClosestPoint(TArray toPoint)
-				{
-					var accessor = default(TArrayAccessor);
-					var dim = Dimension;
-					TArray closest = default;
-
-					for (var dimension = 0; dimension < dim; dimension++)
-					{
-						var min = accessor.At(ref MinPoint, dimension);
-						var max = accessor.At(ref MaxPoint, dimension);
-						var to = accessor.At(ref toPoint, dimension);
-						ref var c = ref accessor.At(ref closest, dimension);
-
-						if (min.CompareTo(to) > 0)
-						{
-							c = min;
-						}
-						else if (max.CompareTo(to) < 0)
-						{
-							c = max;
-						}
-						else
-							// Point is within rectangle, at least on this dimension
-							c = to;
-					}
-
-					return closest;
-				}
+			public void GetClosestPoint(Vector3i to, ref Vector3i result)
+			{
+				result.x = MinPoint.x > to.x ? MinPoint.x :
+					MaxPoint.x < to.x ? MaxPoint.x : to.x;
+				result.y = MinPoint.y > to.y ? MinPoint.y :
+					MaxPoint.y < to.y ? MaxPoint.y : to.y;
+				result.z = MinPoint.z > to.z ? MinPoint.z :
+					MaxPoint.z < to.z ? MaxPoint.z : to.z;
 			}
 		}
+
 	}
+
 }

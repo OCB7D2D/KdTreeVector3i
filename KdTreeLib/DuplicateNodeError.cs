@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace KdTree
+namespace KdTree3
 {
 	public class DuplicateNodeError : Exception
 	{

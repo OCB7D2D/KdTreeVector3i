@@ -1,11 +1,8 @@
 KdTree
 ======
 
-A fast, generic, multi-dimensional Binary Search Tree written in C#
+A fast, generic, 3-dimensional Binary Search Tree written in C#
 
-# Install
-Install via Nuget Package Manager
+Specialized for Vectory3i keys (meant to be used by unity or similar).
 
-```
-PM> Install-Package KdTree
-```
+Forked from https://github.com/ufcpp/KdTree (MIT License)

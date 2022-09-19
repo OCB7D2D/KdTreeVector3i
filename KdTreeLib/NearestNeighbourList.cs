@@ -2,32 +2,33 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace KdTree
+namespace KdTree3
 {
-	public partial class NearestNeighbourList<TItem, TDistance>
-		where TDistance : IComparable<TDistance>
+	public partial class NearestNeighbourList<TItem>
 	{
 		private const int DefaultCapacity = 32;
 
 		public interface INearestNeighbourList
 		{
-			bool Add(TItem item, TDistance distance);
-			TDistance FurtherestDistance { get; }
+			bool Add(TItem item, int distance);
+			int FurtherestDistance { get; }
 			bool IsFull { get; }
 		}
 
 		public class UnlimitedList : INearestNeighbourList
 		{
-			List<(TItem, TDistance)> _items;
+			List<(TItem, int)> _items;
 
 			public UnlimitedList() : this(DefaultCapacity) { }
-			public UnlimitedList(int capacity) => _items = new List<(TItem, TDistance)>(capacity);
+			public UnlimitedList(int capacity) => _items = new List<(TItem, int)>(capacity);
 
-			public TDistance FurtherestDistance => default;
+			public int FurtherestDistance => default;
 
 			public bool IsFull => false;
 
-			public bool Add(TItem item, TDistance distance)
+			public int Count => _items.Count;
+
+			public bool Add(TItem item, int distance)
 			{
 				_items.Add((item, distance));
 				return true;
@@ -43,18 +44,18 @@ namespace KdTree
 			public List(int maxCount, int capacity)
 			{
 				MaxCount = maxCount;
-				queue = new PriorityQueue<TItem, TDistance>(capacity);
+				queue = new PriorityQueue<TItem>(capacity);
 			}
 
 			public List(int maxCount) : this(maxCount, DefaultCapacity) { }
 			public List() : this(int.MaxValue, DefaultCapacity) { }
 
-			private PriorityQueue<TItem, TDistance> queue;
+			private PriorityQueue<TItem> queue;
 			public int MaxCount { get; }
 
 			public int Count { get { return queue.Count; } }
 
-			public bool Add(TItem item, TDistance distance)
+			public bool Add(TItem item, int distance)
 			{
 				if (queue.Count >= MaxCount)
 				{
@@ -77,7 +78,7 @@ namespace KdTree
 				}
 			}
 
-			public TDistance FurtherestDistance => queue.GetHighestPriority();
+			public int FurtherestDistance => queue.GetHighestPriority();
 			public bool IsFull => Count == MaxCount;
 
 			public TItem RemoveFurtherest()

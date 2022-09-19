@@ -1,72 +1,63 @@
 ﻿using System;
 using System.Text;
 
-namespace KdTree
+namespace KdTree3
 {
-	public partial class Point<T, TArithmetic>
+	public partial class KdTree<TMetric>
+		where TMetric : IMetric
 	{
-		public partial class Dimention<TArray, TArrayAccessor>
+
+		public partial class Vector3i<TValue>
 		{
-			public partial class Metric<TMetric>
+			[Serializable]
+			public class Node
 			{
-				public partial class Tree<TValue>
+				public Node(Vector3i point, TValue value)
 				{
-					[Serializable]
-					public class Node
+					Point = point;
+					Value = value;
+				}
+
+				public Vector3i Point;
+				public TValue Value = default;
+
+				internal Node LeftChild = null;
+				internal Node RightChild = null;
+
+				internal ref Node this[int compare]
+				{
+					get
 					{
-						public Node(TArray point, TValue value)
-						{
-							Point = point;
-							Value = value;
-						}
-
-						public TArray Point;
-						public TValue Value = default;
-
-						internal Node LeftChild = null;
-						internal Node RightChild = null;
-
-						internal ref Node this[int compare]
-						{
-							get
-							{
-								if (compare <= 0)
-									return ref LeftChild;
-								else
-									return ref RightChild;
-							}
-						}
-
-						public bool IsLeaf
-						{
-							get
-							{
-								return (LeftChild == null) && (RightChild == null);
-							}
-						}
-
-						public override string ToString()
-						{
-							var sb = new StringBuilder();
-
-							var accessor = default(TArrayAccessor);
-							var dim = accessor.Length;
-							var p = Point;
-							for (var i = 0; i < dim; i++)
-							{
-								sb.Append(accessor.At(ref p, i).ToString() + "\t");
-							}
-
-							if (Value == null)
-								sb.Append("null");
-							else
-								sb.Append(Value.ToString());
-
-							return sb.ToString();
-						}
+						if (compare <= 0)
+							return ref LeftChild;
+						else
+							return ref RightChild;
 					}
+				}
+
+				public bool IsLeaf
+				{
+					get
+					{
+						return (LeftChild == null) && (RightChild == null);
+					}
+				}
+
+				public override string ToString()
+				{
+					var sb = new StringBuilder();
+
+					sb.Append(Point.ToString() + "\t");
+
+					if (Value == null)
+						sb.Append("null");
+					else
+						sb.Append(Value.ToString());
+
+					return sb.ToString();
 				}
 			}
 		}
+
 	}
 }

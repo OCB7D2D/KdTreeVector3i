@@ -2,8 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Tree = KdTree.Float._2.Euclidean.Tree<string>;
-using Node = KdTree.Float._2.Euclidean.Tree<string>.Node;
+using Tree = KdTree3.Float._2.Euclidean.Tree<string>;
+using Node = KdTree3.Float._2.Euclidean.Tree<string>.Node;
 
 struct City
 {
@@ -13,7 +13,7 @@ struct City
 	public float DistanceFromToowoomba;
 }
 
-namespace KdTree.Tests
+namespace KdTree3.Tests
 {
 	[TestClass]
 	public class KdTreeTests
