@@ -8,7 +8,11 @@ namespace KdTree3
 		{
 			public TItem Item;
 			public int Priority;
-			public ItemPriority(TItem item, int priority) => (Item, Priority) = (item, priority);
+			public ItemPriority(TItem item, int priority)
+			{
+				Item = item;
+				Priority = priority;
+			}
 		}
 
 		private ItemPriority[] _items;

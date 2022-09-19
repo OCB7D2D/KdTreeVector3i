@@ -17,10 +17,10 @@ namespace KdTree3
 
 		public class UnlimitedList : INearestNeighbourList
 		{
-			List<(TItem, int)> _items;
+			List<Tuple<TItem, int>> _items;
 
 			public UnlimitedList() : this(DefaultCapacity) { }
-			public UnlimitedList(int capacity) => _items = new List<(TItem, int)>(capacity);
+			public UnlimitedList(int capacity) => _items = new List<Tuple<TItem, int>>(capacity);
 
 			public int FurtherestDistance => default;
 
@@ -30,7 +30,7 @@ namespace KdTree3
 
 			public bool Add(TItem item, int distance)
 			{
-				_items.Add((item, distance));
+				_items.Add(new Tuple<TItem, int>(item, distance));
 				return true;
 			}
 

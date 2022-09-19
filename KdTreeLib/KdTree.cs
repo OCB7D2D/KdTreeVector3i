@@ -14,7 +14,7 @@ namespace KdTree3
 		static readonly TMetric metric = default;
 
 		[Serializable]
-		public partial class Vector3i<TValue> : IEnumerable<(Vector3i Point, TValue Value)>
+		public partial class Vector3i<TValue> : IEnumerable<Tuple<Vector3i, TValue>>
 		{
 			// public TMetric Metric;
 
@@ -197,13 +197,13 @@ namespace KdTree3
 				while (node != null);
 			}
 
-			public void GetNearestNeighbours(Vector3i point, NearestNeighbourList<(Vector3i Key, TValue Value)>.INearestNeighbourList results)
+			public void GetNearestNeighbours(Vector3i point, NearestNeighbourList<Tuple<Vector3i, TValue>>.INearestNeighbourList results)
 			{
 				var rect = HyperRect.Infinite;
 				AddNearestNeighbours(root, point, rect, 0, results, int.MaxValue);
 			}
 
-			public (Vector3i Key, TValue Value)[] GetNearestNeighbours(Vector3i point, int count = int.MaxValue)
+			public Tuple<Vector3i, TValue>[] GetNearestNeighbours(Vector3i point, int count = int.MaxValue)
 			{
 				if (count > Count)
 					count = Count;
@@ -214,7 +214,7 @@ namespace KdTree3
 				}
 
 				if (count == 0)
-					return Array.Empty<(Vector3i Key, TValue Value)>();
+					return new Tuple<Vector3i, TValue>[0];
 
 				var nearestNeighbours = CreateNearestNeighbourList(count);
 
@@ -269,7 +269,7 @@ namespace KdTree3
 				Vector3i target,
 				HyperRect rect,
 				int depth,
-				NearestNeighbourList<(Vector3i Key, TValue Value)>.INearestNeighbourList nearestNeighbours,
+				NearestNeighbourList<Tuple<Vector3i, TValue>>.INearestNeighbourList nearestNeighbours,
 				int maxSearchRadiusSquared)
 			{
 
@@ -344,7 +344,7 @@ namespace KdTree3
 				distanceSquaredToTarget = metric.DistanceSquared(node.Point, target);
 
 				if (distanceSquaredToTarget <= maxSearchRadiusSquared)
-					nearestNeighbours.Add((node.Point, node.Value), distanceSquaredToTarget);
+					nearestNeighbours.Add(new Tuple<Vector3i, TValue>(node.Point, node.Value), distanceSquaredToTarget);
 
 			}
 
@@ -354,14 +354,14 @@ namespace KdTree3
 			/// <param name="center">Center point</param>
 			/// <param name="radius">Radius to find neighbours within</param>
 			/// <param name="count">Maximum number of neighbours</param>
-			public (Vector3i Key, TValue Value)[] RadialSearch(Vector3i center, int radius, int maxCapacity = int.MaxValue)
+			public Tuple<Vector3i, TValue>[] RadialSearch(Vector3i center, int radius, int maxCapacity = int.MaxValue)
 			{
 				var results = CreateNearestNeighbourList(maxCapacity);
 				RadialSearch(center, radius, results);
 				return results.GetSortedArray();
 			}
 
-			public void RadialSearch(Vector3i center, int radius, NearestNeighbourList<(Vector3i Key, TValue Value)>.INearestNeighbourList results)
+			public void RadialSearch(Vector3i center, int radius, NearestNeighbourList<Tuple<Vector3i, TValue>>.INearestNeighbourList results)
 			{
 				AddNearestNeighbours(
 					root,
@@ -373,6 +373,29 @@ namespace KdTree3
 			}
 
 			public int Count { get; private set; }
+
+			public bool ContainsKey(Vector3i point)
+			{
+				var parent = root;
+				int dimension = -1;
+				do
+				{
+					if (parent == null)
+					{
+						return false;
+					}
+					else if (point == parent.Point)
+					{
+						return true;
+					}
+
+					// Keep searching
+					dimension = Increment(dimension);
+					int compare = CompareVectorDimension(point, parent.Point, dimension);
+					parent = parent[compare];
+				}
+				while (true);
+			}
 
 			public bool TryFindValueAt(Vector3i point, out TValue value)
 			{
@@ -576,7 +599,7 @@ namespace KdTree3
 					RemoveChildNodes(root);
 			}
 
-			public IEnumerator<(Vector3i Point, TValue Value)> GetEnumerator()
+			public IEnumerator<Tuple<Vector3i, TValue>> GetEnumerator()
 			{
 				var left = new Stack<Node>();
 				var right = new Stack<Node>();
@@ -599,7 +622,7 @@ namespace KdTree3
 
 				if (root != null)
 				{
-					yield return (root.Point, root.Value);
+					yield return new Tuple<Vector3i, TValue>(root.Point, root.Value);
 
 					addLeft(root);
 					addRight(root);
@@ -613,7 +636,7 @@ namespace KdTree3
 							addLeft(item);
 							addRight(item);
 
-							yield return (item.Point, item.Value);
+							yield return new Tuple<Vector3i, TValue>(item.Point, item.Value);
 						}
 						else if (right.Any())
 						{
@@ -622,7 +645,7 @@ namespace KdTree3
 							addLeft(item);
 							addRight(item);
 
-							yield return (item.Point, item.Value);
+							yield return new Tuple<Vector3i, TValue>(item.Point, item.Value);
 						}
 						else
 						{
@@ -634,20 +657,20 @@ namespace KdTree3
 
 			IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-			public static NearestNeighbourList<(Vector3i Key, TValue Value)>.List CreateNearestNeighbourList()
-				=> new NearestNeighbourList<(Vector3i Key, TValue Value)>.List();
+			public static NearestNeighbourList<Tuple<Vector3i, TValue>>.List CreateNearestNeighbourList()
+				=> new NearestNeighbourList<Tuple<Vector3i, TValue>>.List();
 
-			public static NearestNeighbourList<(Vector3i Key, TValue Value)>.List CreateNearestNeighbourList(int maxCount)
-				=> new NearestNeighbourList<(Vector3i Key, TValue Value)>.List(maxCount);
+			public static NearestNeighbourList<Tuple<Vector3i, TValue>>.List CreateNearestNeighbourList(int maxCount)
+				=> new NearestNeighbourList<Tuple<Vector3i, TValue>>.List(maxCount);
 
-			public static NearestNeighbourList<(Vector3i Key, TValue Value)>.List CreateNearestNeighbourList(int maxCount, int capacity)
-				=> new NearestNeighbourList<(Vector3i Key, TValue Value)>.List(maxCount, capacity);
+			public static NearestNeighbourList<Tuple<Vector3i, TValue>>.List CreateNearestNeighbourList(int maxCount, int capacity)
+				=> new NearestNeighbourList<Tuple<Vector3i, TValue>>.List(maxCount, capacity);
 
-			public static NearestNeighbourList<(Vector3i Key, TValue Value)>.UnlimitedList CreateUnlimitedList()
-				=> new NearestNeighbourList<(Vector3i Key, TValue Value)>.UnlimitedList();
+			public static NearestNeighbourList<Tuple<Vector3i, TValue>>.UnlimitedList CreateUnlimitedList()
+				=> new NearestNeighbourList<Tuple<Vector3i, TValue>>.UnlimitedList();
 
-			public static NearestNeighbourList<(Vector3i Key, TValue Value)>.UnlimitedList CreateUnlimitedList(int capacity)
-				=> new NearestNeighbourList<(Vector3i Key, TValue Value)>.UnlimitedList(capacity);
+			public static NearestNeighbourList<Tuple<Vector3i, TValue>>.UnlimitedList CreateUnlimitedList(int capacity)
+				=> new NearestNeighbourList<Tuple<Vector3i, TValue>>.UnlimitedList(capacity);
 		}
 
 	}

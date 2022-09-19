@@ -10,7 +10,10 @@
 			public Vector3i MaxPoint;
 
 			public HyperRect(Vector3i minPoint, Vector3i maxPoint)
-				=> (MinPoint, MaxPoint) = (minPoint, maxPoint);
+			{
+				MinPoint = minPoint;
+				MaxPoint = maxPoint;
+			}
 
 			static HyperRect()
 			{
